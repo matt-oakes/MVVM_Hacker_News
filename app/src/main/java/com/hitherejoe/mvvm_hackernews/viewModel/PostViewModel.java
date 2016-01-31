@@ -78,7 +78,11 @@ public class PostViewModel extends BaseObservable {
     }
 
     private void launchStoryActivity() {
-        context.startActivity(ViewStoryActivity.getStartIntent(context, post));
+        if (post.url != null) {
+            context.startActivity(ViewStoryActivity.getStartIntent(context, post));
+        } else {
+            this.launchCommentsActivity();
+        }
     }
 
     private void launchCommentsActivity() {
