@@ -46,6 +46,10 @@ public class Post implements Parcelable {
 
     public Post() { }
 
+    public boolean hasText() {
+        return this.text != null && !this.text.equals("");
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

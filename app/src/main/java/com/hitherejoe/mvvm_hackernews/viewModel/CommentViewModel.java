@@ -28,24 +28,18 @@ public class CommentViewModel extends BaseObservable {
         this.comment = comment;
     }
 
-    @BindingAdapter("containerMargin")
-    public static void setContainerMargin(View view, boolean isTopLevelComment) {
-        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams)
-                view.getLayoutParams();
-        float horizontalMargin = view.getContext().getResources().getDimension(R.dimen.activity_horizontal_margin);
-        float topMargin = isTopLevelComment
-                ? view.getContext().getResources().getDimension(R.dimen.activity_vertical_margin) : 0;
-        layoutParams.setMargins((int) horizontalMargin, (int) topMargin, (int) horizontalMargin, 0);
-        view.setLayoutParams(layoutParams);
-    }
-
     @BindingAdapter("commentDepth")
     public static void setCommentIndent(View view, int depth) {
+        ViewTag viewTag = getViewTag(view);
+        if (viewTag.depth == depth) return;
+
         RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)
                 view.getLayoutParams();
         float margin = ViewUtils.convertPixelsToDp(depth * 20, view.getContext());
         layoutParams.setMargins((int) margin, 0, 0, 0);
         view.setLayoutParams(layoutParams);
+
+        viewTag.depth = depth;
     }
 
     public String getCommentText() {
@@ -66,5 +60,16 @@ public class CommentViewModel extends BaseObservable {
 
     public boolean getCommentIsTopLevel() {
         return comment.isTopLevelComment;
+    }
+
+    private static ViewTag getViewTag(View view) {
+        if (view.getTag() == null || !(view.getTag() instanceof ViewTag)) {
+            view.setTag(new ViewTag());
+        }
+        return (ViewTag) view.getTag();
+    }
+
+    private static class ViewTag {
+        int depth;
     }
 }

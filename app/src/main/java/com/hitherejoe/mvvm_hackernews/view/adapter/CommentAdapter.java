@@ -57,7 +57,7 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.BindingH
             ItemCommentsHeaderBinding commentsHeaderBinding = (ItemCommentsHeaderBinding) holder.binding;
             commentsHeaderBinding.setViewModel(new CommentHeaderViewModel(mContext, mPost));
         } else {
-            int actualPosition = (postHasText()) ? position - 1 : position;
+            int actualPosition = (mPost.hasText()) ? position - 1 : position;
             ItemCommentBinding commentsBinding = (ItemCommentBinding) holder.binding;
             mComments.get(actualPosition).isTopLevelComment = actualPosition == 0;
             commentsBinding.setViewModel(new CommentViewModel(mContext, mComments.get(actualPosition)));
@@ -67,21 +67,17 @@ public class CommentAdapter extends RecyclerView.Adapter<CommentAdapter.BindingH
 
     @Override
     public int getItemCount() {
-        return postHasText() ? mComments.size() + 1 : mComments.size();
+        return mPost.hasText() ? mComments.size() + 1 : mComments.size();
     }
 
     @Override
     public int getItemViewType(int position) {
         // If the post has text, then it's an ASK post - so we show the text as a header comment
-        if (position == 0 && postHasText()) {
+        if (position == 0 && mPost.hasText()) {
             return VIEW_TYPE_HEADER;
         } else {
             return VIEW_TYPE_COMMENT;
         }
-    }
-
-    private boolean postHasText() {
-        return mPost.text != null && !mPost.text.equals("");
     }
 
     public static class BindingHolder extends RecyclerView.ViewHolder {

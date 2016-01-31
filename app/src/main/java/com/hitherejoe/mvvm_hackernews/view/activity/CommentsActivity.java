@@ -107,6 +107,11 @@ public class CommentsActivity extends BaseActivity {
         mCommentsRecycler.setLayoutManager(new LinearLayoutManager(this));
         mCommentsAdapter = new CommentAdapter(this, mPost, mComments);
         mCommentsRecycler.setAdapter(mCommentsAdapter);
+
+        if (mPost.hasText()) {
+            int paddingBottom = mCommentsRecycler.getPaddingBottom();
+            mCommentsRecycler.setPadding(0, 0, 0, paddingBottom);
+        }
     }
 
     private void loadStoriesIfNetworkConnected() {
