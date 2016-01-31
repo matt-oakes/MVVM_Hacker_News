@@ -5,6 +5,7 @@ import android.databinding.BaseObservable;
 import android.databinding.Bindable;
 import android.databinding.BindingAdapter;
 import android.text.Html;
+import android.util.Log;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.RelativeLayout;
@@ -29,28 +30,22 @@ public class CommentViewModel extends BaseObservable {
 
     @BindingAdapter("containerMargin")
     public static void setContainerMargin(View view, boolean isTopLevelComment) {
-        if (view.getTag() == null) {
-            view.setTag(true);
-            ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams)
-                    view.getLayoutParams();
-            float horizontalMargin = view.getContext().getResources().getDimension(R.dimen.activity_horizontal_margin);
-            float topMargin = isTopLevelComment
-                    ? view.getContext().getResources().getDimension(R.dimen.activity_vertical_margin) : 0;
-            layoutParams.setMargins((int) horizontalMargin, (int) topMargin, (int) horizontalMargin, 0);
-            view.setLayoutParams(layoutParams);
-        }
+        ViewGroup.MarginLayoutParams layoutParams = (ViewGroup.MarginLayoutParams)
+                view.getLayoutParams();
+        float horizontalMargin = view.getContext().getResources().getDimension(R.dimen.activity_horizontal_margin);
+        float topMargin = isTopLevelComment
+                ? view.getContext().getResources().getDimension(R.dimen.activity_vertical_margin) : 0;
+        layoutParams.setMargins((int) horizontalMargin, (int) topMargin, (int) horizontalMargin, 0);
+        view.setLayoutParams(layoutParams);
     }
 
     @BindingAdapter("commentDepth")
     public static void setCommentIndent(View view, int depth) {
-        if (view.getTag() == null) {
-            view.setTag(true);
-            RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)
-                    view.getLayoutParams();
-            float margin = ViewUtils.convertPixelsToDp(depth * 20, view.getContext());
-            layoutParams.setMargins((int) margin, 0, 0, 0);
-            view.setLayoutParams(layoutParams);
-        }
+        RelativeLayout.LayoutParams layoutParams = (RelativeLayout.LayoutParams)
+                view.getLayoutParams();
+        float margin = ViewUtils.convertPixelsToDp(depth * 20, view.getContext());
+        layoutParams.setMargins((int) margin, 0, 0, 0);
+        view.setLayoutParams(layoutParams);
     }
 
     public String getCommentText() {
